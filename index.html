@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Tienda Amazon</title>
+
+        <link rel="stylesheet" href="index.css">
+    </head>
+
+    <body>        
+        <div id="app">
+            <!-- BARRA DE NAVEGACION -->
+            <div class="nav-bar">
+                <div class="cart">
+                    <img src="./cart.png" alt="">
+                    <span class="amount">{{ cmpCartAmount }}</span>
+                    <span class="description">Cart</span>    
+                </div>
+            </div>
+
+            <producto-detalle></producto-detalle>
+        </div>
+
+        <!-- TEMPLATE DETALLE-PRODUCTO -->
+        <script type="text/x-template" id="producto-detalle-templata">
+            <div>
+                <!-- INFORMACION DEL PRODUCTO -->
+                <div class="product">
+                    <!-- COLUMNA IZQUIERDA -->
+                    <div class="left-column">
+                        <!-- GALERIA DE IMAGENES-->
+                        <div class="sidebar-img" >
+                            <img 
+                                v-for="(item, index) in imagenModeloSeleccionado" 
+                                :key="index" 
+                                :src="item" 
+                                alt="" 
+                                :class="{ 'side-img': true, 'img-selected': index === indiceGaleria }"
+                                @mouseover="imagenGaleria(index)"                            
+                            >
+                        </div>
+    
+                        <!-- IMAGEN PRINCIPAL -->
+                        <img :src="imagenSeleccionada" class="img" alt="">
+                    </div>    
+    
+                    <!-- COLUMNA CENTRAL -->
+                    <div class="center-column">
+                        <!-- DETALLE DEL PRODUCTO -->
+                        <div class="details">
+                            <!-- NOMBRE DEL PRODUCTO -->
+                            <h1>{{ product.name }}</h1>
+                            
+                            <hr>
+    
+                            <!-- DATOS DEL STOCK DEL PRODUCTO -->
+                            <span :class="claseStock"> {{ mensajeStock }} </span>
+    
+                            <!-- ENVIO -->
+                            <span>Envio: <b>{{ envio }}</b></span>
+    
+                            <!-- MODELO DEL PRODUCTO -->
+                            <span>Modelo: <b>{{ nombreModelo }}</b></span>
+    
+                            <!-- COLORES DEL MODELO DEL PRODUCTO -->
+                            <div class="colors">
+                                <span
+                                    v-for="(item, index) in product.models" 
+                                    @mouseover="seleccionarModelo(index, 0)"
+                                    :key="index" 
+                                    :class="{ 'color-box': true, 'color-selected': index === modeloSeleccionado }"
+                                    :style="{ backgroundColor: item.color }"
+                                    :title="item.name">
+                                </span>
+                            </div>
+    
+                            <!-- INFORMACION DEL MODELO DEL PRODUCTO -->
+                            <ul>
+                                <li v-for="(item, index) in informacionModelo" :key="index">{{ item }}</li>
+                            </ul>   
+                        </div>
+                    </div>
+    
+                    <!-- COLUMNA DERECHA -->
+                    <div class="right-column">
+                        <!-- BOTON PARA ADICIONAR AL CARRITO -->
+                        <button 
+                            :disabled="habilitaBoton"
+                            :class="claseBoton"
+                            @click="addToCart">Add To Cart
+                        </button>
+                    </div>
+                </div>        
+            </div>        
+        </script>
+
+        <script src="https://cdn.jsdelivr.net/npm/vue@2.6.12"></script>
+        <script src="index.js"></script>
+    </body>
+</html>
